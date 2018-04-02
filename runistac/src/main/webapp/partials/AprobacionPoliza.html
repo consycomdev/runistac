@@ -1,0 +1,332 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Aprobaci&oacute;n de Siniestro del titulo valor - Listado de Postulaciones</div>
+    <div class="panel-body">
+        <table class="resultados table table-striped">
+            <tr>
+                <th>Fecha</th>
+                <th>Solicitud</th>
+                <th>N&uacute;mero de CCM solicitados</th>
+                <th>Estado</th>
+                <th>Solicitante</th>
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td class="row">{{row.fecha| date: 'dd/MM/yyyy'}}</td>
+                <td class="row">{{row.solicitud}}</td>
+                <td class="row">{{row.numeroCCM}}</td>
+                <td class="row">{{row.estado}}</td>
+                <td class="row">{{row.persona.tipoDocumento.abreviatura}}-{{row.persona.numeroDocumento}}<br/> {{row.nombreSolicitante}}</td>              
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="registrarPagos(row)">
+                        <span class="glyphicon glyphicon-zoom-in"></span>Autorizar Siniestro
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Aprobaci&oacute;n del titulo valor - Detalle de la solicitud</div>
+    <div class="panel-body">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informaci&oacute;n de la Solicitud</div>
+            <div class="panel-body">
+                <div class="form-group col-md-12">
+                    <label>Tipo Proceso:</label>
+                    <span class="form-control">Runistac - CCM</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>N&uacute;mero de la Solicitud:</label>
+                    <span class="form-control">{{postulacion.solicitud}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Estado del Tr&aacute;mite:</label>
+                    <span class="form-control">{{postulacion.estado}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Solicitante:</label>
+                    <span class="form-control">{{infoPersona.primerNombre}} {{infoPersona.segundoNombre}} {{infoPersona.primerApellido}} {{infoPersona.segundoApellido}}</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Tipo Documento Solicitante:</label>
+                    <span class="form-control">{{postulacion.persona.tipoDocumento.abreviatura}}</span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>N&uacute;mero Documento Solicitante:</label>
+                    <span class="form-control">{{postulacion.persona.numeroDocumento}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>¿Es Leasing?:</label>
+                    <span ng-show="postulacion.leasing">Si</span>
+                    <span ng-hide="postulacion.leasing">No</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Locatarios:</label>
+                    <table class="resultados table table-striped">
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                        </tr>
+                        <tr ng-repeat="row in postulacion.locatarios">
+                            <td class="row">{{row.tipodocumento.abreviatura}} {{row.numeroDocumento}}</td>
+                            <td class="row">{{row.nombre}}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Observaciones:</label>
+                    <textarea class="form-control" rows="5">{{postulacion.observacionesRechazo}}</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informaci&oacute;n del veh&iacute;culo a matricular</div>
+            <div class="panel-body">
+                <div class="alert alert-warning" role="alert" ng-show="consultaVehiculo.vehiculo && !consultaVehiculo.vehiculo.fthCarroceria">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only">Alerta:</span>
+                    El vehiculo no cuenta con FTH de carroceria, para continuar el proceso debe ingresar el dato
+                </div>
+                <div class="col-lg-12">
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>VIN:</label>
+                        <span>{{consultaVehiculo.vehiculo.vin}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Motor:</label>
+                        <span>{{consultaVehiculo.vehiculo.motor}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Serie:</label>
+                        <span>{{consultaVehiculo.vehiculo.serie}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Chasis:</label>
+                        <span>{{consultaVehiculo.vehiculo.chasis}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>FTH Chasis:</label>
+                        <span>{{consultaVehiculo.vehiculo.fthChasis}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>FTH Carrocer&iacute;a:</label>
+                        <span ng-show="consultaVehiculo.vehiculo.fthCarroceria">{{consultaVehiculo.vehiculo.fthCarroceria}}</span> 
+                        <input type="text" class="form-control" ng-model="fth" ng-hide="consultaVehiculo.vehiculo.fthCarroceria"/>
+                        <div class="btn-group pull-right" ng-hide="consultaVehiculo.vehiculo.fthCarroceria">
+                            <button class="btn btn-default" ng-click="validarFTH()">Consultar</button>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Marca:</label>
+                        <span>{{consultaVehiculo.vehiculo.marca}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Linea:</label>
+                        <span>{{consultaVehiculo.vehiculo.linea}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Clase:</label>
+                        <span>{{consultaVehiculo.vehiculo.clase}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Peso Bruto Veh&iacute;cular:</label>
+                        <span>{{consultaVehiculo.vehiculo.pesoBrutoVehicular}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Carroceria:</label>
+                        <span>{{consultaVehiculo.vehiculo.carroceria}}</span> 
+                    </div>               
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Ejes:</label>
+                        <span>{{consultaVehiculo.vehiculo.numeroEjes}}</span> 
+                    </div>
+                    <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                        <label>Configuracion:</label>
+                        <span>{{consultaVehiculo.vehiculo.configuracion}}</span> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informaci&oacute;n del titulo valor</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="form-group col-md-12">
+                        <label>Tomador:</label>
+                        <span>{{poliza.tomador}}</span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Tipo:</label>
+                        <span>{{poliza.tipo}}</span>
+                    </div>
+                    <div class="form-group col-md-12" ng-show="poliza.tipoGarantia">
+                        <label>Garantia Bancar&iacute;a:</label>
+                        <span>{{poliza.tipoGarantia.nombre}}</span>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label>Asegurado o Beneficiario: </label>
+                        <span>{{poliza.asegurado|uppercase}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                        <label>N&uacute;mero del T&iacute;tulo Valor:</label>
+                        <span>{{poliza.numero}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                        <label>N&uacute;mero de factura del Veh&iacute;culo:</label>
+                        <span>{{poliza.numeroFactura}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                        <label>Fecha de Expedici&oacute;n</label>
+                        <span>{{poliza.fechaExpedicion}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.fechaInicioVigencia ? 'error' : ''">
+                        <label>Fecha de Inicio de la Vigencia:</label>
+                        <span>{{poliza.fechaInicioVigencia}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.fechaFinVigencia ? 'error' : ''">
+                        <label>Fecha Fin de la Vigencia</label>
+                        <span>{{poliza.fechaFinVigencia}}</span>
+                    </div>
+                </div>	
+                <div class="row">
+                    <div class="form-group col-md-6" ng-class="errores.valorAsegurado ? 'error' : ''">
+                        <label>Valor Asegurado</label>
+                        <span>{{poliza.valorAsegurado}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.idAseg ? 'error' : ''">
+                        <label>Entidad Financiera:</label>
+                        <span>{{poliza.entidadFinanciera.nombre}}</span>
+                    </div>
+                    <div class="form-group col-md-6" ng-class="errores.idAseg ? 'error' : ''">
+                        <label>Correo Entidad Financiera:</label>
+                        <span>{{poliza.entidadFinanciera.correo}}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Tipo Documento</th>
+                                <th>Descargar</th>
+                            </tr>
+                            <tr ng-repeat="row in postulacion.anexo">
+                                <td><span title="{{row.tipoAnexo.descripcion}}">{{row.tipoAnexo.nombre}}</span></td>
+                                <td>
+                                    <button type="button" class="btn btn-default" ng-click="descargar(row.id)">
+                                        Descargar
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br/>
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="aprobarSiniestroPoliza()">Autorizar Siniestro</button>
+            <button type="button" class="btn btn-default" ng-click="mostrarRechazar()">Rechazar Solicitud</button>
+            <button type="button" class="btn btn-default" ng-click="mostrarDevolver()">Devolver al Ciudadano</button>
+            <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modalRechazo" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Motivos de Rechazo</h4>
+            </div>
+            <div class="modal-body">
+                <p>Por favor seleccione el motivo de rechazo y las observaciones.</p>
+                <div class="form-group">
+                    <label>Motivo de Rechazo:</label>
+                    <select class="form-control" ng-model="postulacion.causalesRechazo"
+                            ng-options="option.nombre for option in listaCausalesRechazo track by option.id"></select>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones:</label>
+                    <textarea ng-model="observacionesRechazo" rows="4" class="form-control">
+                        
+                    </textarea>
+                </div>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-default" ng-click="rechazarSolicitud()">Rechazar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalDevolucion" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Motivos de Devoluci&oacute;n</h4>
+            </div>
+            <div class="modal-body">
+                <p>Por favor seleccione el motivo de devoluci&oacute;n y las observaciones.</p>
+                <div class="form-group">
+                    <label>Motivo de Devoluci&oacute;n:</label>
+                    <select class="form-control" ng-model="postulacion.causalesRechazo"
+                            ng-options="option.nombre for option in listaCausalesDevolucion track by option.id"></select>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones:</label>
+                    <textarea ng-model="observacionesRechazo" rows="4" class="form-control">
+                        
+                    </textarea>
+                </div>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-default" ng-click="devolverSolicitud()">devolver</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalFTH" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Motivos de Devoluci&oacute;n</h4>
+            </div>
+            <div class="modal-body">
+                <p>Por favor digite la informac&oacute;n solicitada:</p>
+                <div class="form-group">
+                    <label>FTH de Carrocer&iacute;a:</label>
+                    <input class="form-control" id="fth" ng-model="fth"/>
+                </div>
+            </div>
+            <div class="modal-footer btn-group">
+                <button type="button" class="btn btn-default" ng-click="devolverSolicitud()">devolver</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

@@ -1,0 +1,176 @@
+.subpanel{
+    padding: 0px;
+}
+
+.subpanel>.panel-body {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.subpanel>.panel-heading {
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+.subpanel>.panel-body>.form-group{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin: 0px;
+}
+
+#iframeContenido{
+    margin-left: auto;
+    margin-right: auto;
+    display:block;
+    border:0px;
+    padding-top: 10px;
+}
+
+body {
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #F5F5F5;
+    background-repeat: repeat-x;
+    overflow-x: hidden;
+    
+    
+    background: url('../img/pd_rz_04.jpg') #ffffff repeat-x;
+
+    
+}
+
+.content{
+    width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+
+
+.content-header {
+    background: url('../img/pd_rz_fondo.jpg');
+    height: 76px;
+    vertical-align: bottom;
+}
+
+.titulo {
+    color: #FFFFFF;
+    font: 300% sans-serif;
+    height: 76px;
+    line-height: 76px;
+    box-shadow: 2px 2px 5px #999;
+    width: 80%;
+    text-align: center;
+}
+
+.depth {
+    display: block;
+    color: #FFFFFF;
+    font: bold 50px arial, sans-serif;
+    position: relative;
+    margin-left: 40%;
+    height: 76px;
+    line-height: 76px;
+    width: 400px;
+}
+
+.depth:before, .depth:after {
+    content: attr(title);
+    color: rgba(200,200,200,.1);
+    position: absolute;
+        
+}
+
+.depth:before { top: 1px; left: 1px }
+.depth:after  { top: 2px; left: 2px }
+
+.content-header > h1{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+@media (max-width: 1000px) {                  
+   #titulo-app {
+      display: none;
+   }
+}
+
+.btn-group{
+    padding-bottom: 10px;
+}
+
+
+.panel-heading{
+    font-weight: bolder;
+}
+
+.content-body{
+    background: url('../img/pd_rz_09.jpg') #ffffff repeat-x;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.content-body>.ng-scope>.panel-primary{
+    border: 1px solid #4584F5; 
+}
+
+.content-body>.ng-scope>.panel-primary>.panel-heading{
+    color: #ff881c; 
+    background-color: white;
+    border-bottom: none;
+    font-size: x-large
+}
+
+.error{
+    color: red;
+    border-color: red;
+}
+
+.error input{
+    color: red;
+    border-color: red;
+}
+
+.error select{
+    color: red;
+    border-color: red;
+}
+
+.nav-tabs>li>a{
+    background-color: #EEEEEE;
+}
+
+span.readonly{
+    background-color: #fff7f7;
+}
+
+.paginacion{
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
+}
+
+
+.fc-event-container>a>.fc-content{
+    background-color: #2D5D8E;
+}
+
+.fc-event-container>a>.fc-bg{
+    background-color: #2D5D8E;
+}
+
+.modal{
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.espera-modal-content{
+   width: 300px; 
+   margin-left: auto; 
+   margin-right: auto; 
+   top: 200px; 
+}

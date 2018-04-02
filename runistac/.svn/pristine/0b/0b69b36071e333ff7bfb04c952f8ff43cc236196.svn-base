@@ -1,0 +1,125 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n Entidades Financieras</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nueva Entidad Financiera</button>
+            <button type="button" class="btn btn-default" ng-click="cancelar()">Listar Entidades Financieras</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Nit
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Correo
+                </th>
+                <th>
+                    ¿Permite Garant&iacute;as Bancarias?
+                </th>
+                <th>
+                    ¿Permite Solicitud de CCM?
+                </th>
+                <th>
+                    <input class="form-control" ng-model="q"  placeholder="Buscar"/>
+                </th>
+            </tr>
+            <tr dir-paginate="row in lista|filter: q|itemsPerPage:10">
+                <td>{{row.tipo}}</td>
+                <td>{{row.nit}}</td>
+                <td>{{row.nombre}}</td>
+                <td>{{row.correo}}</td>
+                <td><span class="glyphicon" ng-class="(row.garantiaBancaria ? 'glyphicon-ok' : 'glyphicon-remove')"></span></td>
+                <td><span class="glyphicon" ng-class="(row.solicitudCCM ? 'glyphicon-ok' : 'glyphicon-remove')"></span></td>
+
+                <td>
+                    <div class="btn-group row">
+                        <button type="button" class="btn btn-default" ng-click="editar(row)">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div dir-pagination-controls></div>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n Entidades Financieras</div>
+    <div class="panel-body">
+        <form role="form" id="formularioEditar">
+            <div class="row">
+                <div class="form-group col-md-6" ng-class="errores.tipo ? 'error' : ''">
+                    <label for="tipo">Tipo</label>
+                    <select id="tipo" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.tipo"
+                           placeholder="nombre">
+                        <option value="BANCO">Banco</option>
+                        <option value="ASEGURADORA">Aseguradora</option>
+                    </select>
+                    <div ng-show="errores.nombre">{{errores.nombre}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.nombre ? 'error' : ''">
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.nombre"
+                           placeholder="nombre"/>
+                    <div ng-show="errores.nombre">{{errores.nombre}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.nit ? 'error' : ''">
+                    <label for="nit">Nit</label>
+                    <input id="nit" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.nit"
+                           placeholder="nit"/>
+                    <div ng-show="errores.nit">{{errores.nit}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.correo ? 'error' : ''">
+                    <label for="correo">Correo</label>
+                    <input id="nit" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.correo"
+                           placeholder="Correo"/>
+                    <div ng-show="errores.correo">{{errores.correo}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.nit ? 'error' : ''">
+                    <label for="garantiaBancaria">¿Permite Garantia Bancar&iacute;a?</label>
+                    <input id="garantiaBancaria" 
+                           class="form-control" 
+                           type="checkbox"
+                           ng-model="datosFormulario.garantiaBancaria"/>
+                    <div ng-show="errores.nit">{{errores.nit}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.nit ? 'error' : ''">
+                    <label for="solicitudCCM">¿Permite Solicitud de CCM?</label>
+                    <input id="solicitudCCM" 
+                           class="form-control" 
+                           type="checkbox"
+                           ng-model="datosFormulario.solicitudCCM"/>
+                    <div ng-show="errores.nit">{{errores.nit}}</div>
+                </div>
+            </div> 
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="guardar()">Guardar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,202 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Listado de Postulaciones</div>
+    <div class="panel-body">
+        <table class="resultados table table-striped">
+            <tr>
+                <th>Fecha</th>
+                <th>Solicitud</th>
+                <th>N&uacute;mero de CCM solicitados</th>
+                <th>Estado</th>
+                <th>Solicitante</th>
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td class="row">{{row.fecha| date: 'dd/MM/yyyy'}}</td>
+                <td class="row">{{row.solicitud}}</td>
+                <td class="row">{{row.numeroCCM}}</td>
+                <td class="row">{{row.estado}}</td>
+                <td class="row">{{row.persona.tipoDocumento.abreviatura}}-{{row.persona.numeroDocumento}}</td>              
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-zoom-in"></span>Ver detalle
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Detalle de la Postulaci&oacute;n - CCM</div>
+    <div class="panel-body">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informaci&oacute;n de la Solicitud</div>
+            <div class="panel-body">
+                <div class="form-group col-md-12">
+                    <label>Tipo Proceso:</label>
+                    <span class="form-control">Runistac - CCM</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>N&uacute;mero de la Solicitud:</label>
+                    <span class="form-control">{{datosFormulario.solicitud}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Estado del Tr&aacute;mite:</label>
+                    <span class="form-control">{{datosFormulario.estado}}</span>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label>Tipo Documento Solicitante:</label>
+                    <span class="form-control">{{datosFormulario.persona.tipoDocumento.abreviatura}}</span>
+                </div>
+                <div class="form-group col-xs-6">
+                    <label>N&uacute;mero Documento Solicitante:</label>
+                    <span class="form-control">{{datosFormulario.persona.numeroDocumento}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Solicitante:</label>
+                    <span class="form-control">{{infoPersona.primerNombre}} {{infoPersona.segundoNombre}} {{infoPersona.primerApellido}} {{infoPersona.segundoApellido}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Fecha Asignaci&oacute;n:</label>
+                    <span class="form-control">{{datosFormulario.fechaPago}}</span>
+                </div>
+                <div class="form-group col-md-12">
+                    <label>Tiempo de Atenci&oacute;n (Tiempo en horas):</label>
+                    <span class="form-control">{{datosFormulario.tiempoAtencion}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Datos de la Solicitud</div>
+            <div class="panel-body">
+                <div class="form-group col-md-12">
+                    <label>Cantidad de CCM solicitados</label>
+                    <span class="form-control">{{datosFormulario.numeroCCM}}</span>
+                </div>
+                <div class="col-md-12">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Tipo Documento</th>
+                            <th>Descargar</th>
+                        </tr>
+                        <tr ng-repeat="row in datosFormulario.anexo">
+                            <td><span title="{{row.tipoAnexo.descripcion}}">{{row.tipoAnexo.nombre}}</span></td>
+                            <td>
+                                <button type="button" class="btn btn-default" ng-click="descargar(row.id)">
+                                    Descargar
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-primary">
+            <div class="panel-heading">Informacion de los vehiculos que posee el solicitante</div>
+            <div class="panel-body">
+                
+                <table class="table table-striped">
+                    <tr>
+                        <th>Placa</th>
+                        <th>Clase</th>
+                        <th>Carroceria</th>
+                        <th>Modelo</th>
+                        <th>Nro. Ejes</th>
+                        <th>Peso</th>
+                        <th>Servicio</th>
+                        <th>Nro. Propietarios</th>
+                    </tr>
+                    <tr ng-repeat="row in listaVehiculos">
+                        <td>{{row.placa}}</td>
+                        <td>{{row.clase}}</td>
+                        <td>{{row.carroceria}}</td>
+                        <td>{{row.modelo}}</td>
+                        <td>{{row.ejes}}</td>
+                        <td>{{row.peso}}</td>
+                        <td>{{row.servicio}}</td>
+                        <td>{{row.propietarios}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="btn-group pull-right">
+            <button type="button" class="btn btn-default" ng-click="abrirAprobar()">Aprobar</button>
+            <button type="button" class="btn btn-default" ng-click="abrirRechazar()">Rechazar</button>
+            <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+        </div>
+    </div>
+</div>
+<div id="modalRechazo" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Motivos de Rechazo</h4>
+            </div>
+            <div class="modal-body">
+                <p>Por favor seleccione el motivo de rechazo y las observaciones.</p>
+                <div class="form-group">
+                    <label>Motivo de Rechazo:</label>
+                    <select class="form-control" ng-model="datosFormulario.causalesRechazo"
+                            ng-options="option.nombre for option in listaCausalesRechazo track by option.id"></select>
+                </div>
+                <div class="form-group">
+                    <label>Observaciones:</label>
+                    <textarea ng-model="datosFormulario.observacionesRechazo" rows="4" class="form-control">
+                        
+                    </textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="rechazar()">Rechazar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="modalAprobacion" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Aprobaci&oacute;n de la postulaci&oacute;n</h4>
+            </div>
+            <div class="modal-body">
+                <p>Por favor seleccione el tipo de transportador y la cantidad de CCM aprobados</p>
+                <div class="form-group">
+                    <label>Tipo de Transportador:</label>
+                    <select ng-model="datosFormulario.tipoTransportador" class="form-control" id="tipoTransportador" 
+                            ng-options="option.nombre for option in listaTipoTransportador track by option.id" ng-change="calcularNumeroVehiculos()">
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Cantidad de CCM aprobados:</label>
+                    <select ng-model="datosFormulario.numeroCCM" class="form-control" id="cantidadCCMAprobados" ng-change="calcularNumeroVehiculos()">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Cantidad de Veh&iacute;culos que puede matricular:</label>
+                    <span class="form-control">{{numeroVehiculos}}</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="aprobar()">Aprobar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+</div>

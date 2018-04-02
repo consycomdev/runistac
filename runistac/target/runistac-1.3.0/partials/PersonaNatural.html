@@ -1,0 +1,111 @@
+<div class="btn-group">
+	<button type="button" class="btn btn-default" ng-click="nuevo()">Nuevo PersonaNatural</button>
+	<button type="button" class="btn btn-default" ng-click="cancelar()">Listar PersonaNatural</button>
+</div>
+				
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de PersonaNatural</div>
+    <div class="panel-body">
+        <table class="resultados table table-striped">
+            <tr>
+                				<th>
+                                    primerNombre
+                                </th>				<th>
+                                    primerApellido
+                                </th>				<th>
+                                    segundoNombre
+                                </th>				<th>
+                                    segundoApellido
+                                </th>
+								<th>
+				                    persona
+				                </th>
+				<th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                		<td class="row">{{row.primerNombre}}</td>
+                		<td class="row">{{row.primerApellido}}</td>
+                		<td class="row">{{row.segundoNombre}}</td>
+                		<td class="row">{{row.segundoApellido}}</td>
+                
+					<td class="row">{{row.persona.nombre}}</td>              
+				<td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+					<button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de PersonaNatural</div>
+    <div class="panel-body">
+        <form role="form" id="formularioEditar">
+            				<div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.primerNombre?'error':''">
+                                    <label for="primerNombre">primerNombre</label>
+                                    <input id="primerNombre" 
+                                           class="form-control" 
+            							   type="text"
+                                           ng-model="datosFormulario.primerNombre"
+            							   placeholder="primerNombre"/>
+                                    <div ng-show="errores.primerNombre">{{errores.primerNombre}}</div>
+                                </div>
+                            </div>				<div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.primerApellido?'error':''">
+                                    <label for="primerApellido">primerApellido</label>
+                                    <input id="primerApellido" 
+                                           class="form-control" 
+            							   type="text"
+                                           ng-model="datosFormulario.primerApellido"
+            							   placeholder="primerApellido"/>
+                                    <div ng-show="errores.primerApellido">{{errores.primerApellido}}</div>
+                                </div>
+                            </div>				<div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.segundoNombre?'error':''">
+                                    <label for="segundoNombre">segundoNombre</label>
+                                    <input id="segundoNombre" 
+                                           class="form-control" 
+            							   type="text"
+                                           ng-model="datosFormulario.segundoNombre"
+            							   placeholder="segundoNombre"/>
+                                    <div ng-show="errores.segundoNombre">{{errores.segundoNombre}}</div>
+                                </div>
+                            </div>				<div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.segundoApellido?'error':''">
+                                    <label for="segundoApellido">segundoApellido</label>
+                                    <input id="segundoApellido" 
+                                           class="form-control" 
+            							   type="text"
+                                           ng-model="datosFormulario.segundoApellido"
+            							   placeholder="segundoApellido"/>
+                                    <div ng-show="errores.segundoApellido">{{errores.segundoApellido}}</div>
+                                </div>
+                            </div> 
+							<div class="row">
+			                    <div class="form-group col-md-6" ng-class="errores.idAseg?'error':''">
+			                        <label>persona</label>
+									<select id="persona" class="form-control" 
+			                            ng-model="datosFormulario.persona"
+			                            ng-options="option.nombre for option in listaPersona track by option.id">
+			                    	</select>
+			                        <div ng-show="errores.persona">{{errores.persona}}</div>
+			                    </div>
+			                </div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default" ng-click="guardar()" ng-show="nuevoRegistro">Guardar</button>
+                <button type="button" class="btn btn-default" ng-click="guardar()" ng-show="!nuevoRegistro">Aceptar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

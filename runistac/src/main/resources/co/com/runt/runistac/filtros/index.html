@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html ng-app="admin${pagina}">
+    <head>
+        <title>RUNISTAC - RUNT</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="IE=11" />
+
+        <link href="./css/bootstrap.min.css" rel="stylesheet">
+        <link href="./css/fullcalendar.min.css" rel="stylesheet">
+        <link href="./css/select.css" rel="stylesheet">
+        <link href="./css/jquery-ui.css" rel="stylesheet">
+        <link href="./css/selectize.default.css" rel="stylesheet">
+        <link href="./css/main.css" rel="stylesheet">
+        <script src="./js/lib/jquery-1.12.4.js"></script>
+        <script src="./js/lib/jquery-ui.js"></script>
+
+        <script src="./js/lib/utils.js"></script>
+        <script src="./js/lib/bootstrap-datepicker.min.js"></script>
+        <script src="./js/lib/bootstrap-datepicker.es.js"></script>
+        <script src="./js/lib/moment.min.js"></script>
+
+        <script src="./js/lib/fullcalendar.js"></script>
+        <script src="./js/lib/fullCalendar-es.js"></script>
+        
+    </head>
+    <body>
+        <div class="content">
+            <!-- nav class="navbar navbar-default" role="navigation">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target=".navbar-ex1-collapse">
+                        <span class="sr-only">Desplegar navegaci&oacute;n</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Inicio</a>
+                </div>
+
+                <div class="collapse navbar-collapse navbar-ex1-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="AprobacionPostulacion.html#/">Aprobaci&oacute;n Postulaci&oacute;n</a></li>
+                        <li><a href="ConsultaCCM.html#/">Consulta CCM</a></li>
+                        <li><a href="Postulacion.html#/">Consulta Runistac</a></li>
+                        <li><a href="TipoAnexo.html#/">Tipo Anexo</a></li>
+                        <li><a href="ParametroSistema.html#/">Parametros Sistema</a></li>
+                        <li><a href="TipoTransportador.html#/">Tipo Transportador</a></li>
+                        <li><a href="CausalesRechazo.html#/">Causales Rechazo</a></li>
+                        <li><a href="PagosMT.html#/">Registro del Pago</a></li>
+                    </ul>
+                </div>
+            </nav -->
+
+            <div class="content-header">
+
+                <img class="pull-left" src="img/pd_rz_06.jpg" alt="encabezado"/>
+                <br/>
+                <br/>
+                <a class="btn btn-primary pull-right" href="/runt/bienvenida.jsf">Volver a la P&aacute;gina Principal</a>
+            </div>
+            <div class="content-body col-lg-12">
+                <div class="ng-scope" ng-view=""></div>
+            </div>
+            <div class="content-footer">
+
+            </div>
+        </div>
+
+        <div class="modal fade modal-lg" id="firmaModal" role="dialog">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <h3 id="firmaTitulo">Titulo de la firma</h3>
+                        <div class="form-group">
+                            <div class="panel-group">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-target="#collapse1">Ver informaci&oacute;n que va a ser firmada</a>
+                                        </h4>
+                                    </div>
+                                    <div id="collapse1" class="panel-collapse collapse">
+                                        <textarea class="form-control" rows="15" id="textoFirma" readonly=""></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" onclick="aceptarFirma()">Aceptar</button>
+                            <button type="button" class="btn btn-primary" onclick="cancelarFirma()">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal-sm" id="esperaModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content espera-modal-content">
+                    <div class="modal-body">
+                        <div class="row">
+                        <div class="col-xs-3">
+                            <img src="./images/cargando.gif" style="width: 50px;">
+                        </div>
+                        <div class="col-xs-9">
+                            Por favor espere
+                        </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="dlgConsulta" tabindex="-1" role="dialog" aria-labelledby="dlgConsulta" aria-hidden="false">
+            <div class="modal-dialog modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">INFORMACI&Oacute;N</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="text-align: justify;"><span id="msgConsulta"> </span></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./js/lib/es5-shim.js"></script>
+
+        <script src="./js/lib/angular.min.js"></script>
+        <script src="./js/lib/angular-locale_es-co.js"></script>
+        <script src="./js/lib/angular-route.js"></script>
+        <script src="./js/lib/angular-animate.js"></script>
+        <script src="./js/lib/angular-sanitize.js"></script>
+        <script src="./js/lib/select.js"></script>
+        <script src="./js/lib/ui-bootstrap-tpls-0.12.0.min.js"></script>
+        <script src="./js/lib/bootstrap.min.js"></script>
+        <script src="./js/lib/dirpaginate.js"></script>
+        <script src="./js/${pagina}Controller.js"></script>
+        <script src="./js/app/${pagina}App.js"></script>
+        <script src="./js/lib/firma.js"></script>
+        <script src="./js/lib/FileSaver.js"></script>
+    </body>
+</html>
+

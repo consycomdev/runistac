@@ -1,0 +1,68 @@
+<div class="btn-group">
+    <button type="button" class="btn btn-default" ng-click="nuevo()">Nuevo AsignacionCCM</button>
+    <button type="button" class="btn btn-default" ng-click="cancelar()">Listar AsignacionCCM</button>
+</div>
+
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de AsignacionCCM</div>
+    <div class="panel-body">
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    fecha
+                </th>
+
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td class="row">{{row.fecha| date: 'dd/MM/yyyy'}}</td>
+
+
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de AsignacionCCM</div>
+    <div class="panel-body">
+        <form role="form" id="formularioEditar">
+            <div class="row">
+                <div class="form-group col-md-6" ng-class="errores.fecha ? 'error' : ''">
+                    <label for="fecha">fecha</label>
+                    <div class="input-group">
+                        <input id="fecha" 
+                               class="form-control datepicker" 
+                               type="text" 
+                               ng-model="datosFormulario.fecha"/>
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                    </div>
+                    <script>
+                                var dp_fecha = $('#fecha').datepicker({format: 'dd/mm/yyyy'}).on('changeDate', function (ev) {
+                                    dp_fecha.hide();
+                                }).data('datepicker');
+                    </script>
+                    <div ng-show="errores.fecha">{{errores.fecha}}</div>
+                </div>
+            </div> 
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="guardar()" ng-show="nuevoRegistro">Guardar</button>
+                <button type="button" class="btn btn-default" ng-click="guardar()" ng-show="!nuevoRegistro">Aceptar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

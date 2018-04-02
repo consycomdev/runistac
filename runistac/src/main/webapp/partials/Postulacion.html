@@ -1,0 +1,425 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Consulta Runistac</div>
+    <div class="panel-body">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Filtros de B&uacute;squeda: 
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Nro. de solicitud</label>
+                        <input class="form-control" ng-model="datosFormulario.numeroSolicitud"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Tipo de documento del solicitante</label>
+                        <select class="form-control"
+                                ng-model="datosFormulario.tipoDocumento" 
+                                ng-options="item as item.nombre for item in listaTipoDocumento track by item.id">
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Número de documento del solicitante</label>
+                        <input class="form-control" ng-model="datosFormulario.numeroDocumento"/>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha Inicio Registro</label>
+                        <div class="input-group">
+                            <input id="fechaInicio" 
+                                   class="form-control datepicker" 
+                                   type="text" 
+                                   ng-model="datosFormulario.fechaInicio"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <script>
+                                    var dp_fechaInicio = $('#fechaInicio').datepicker({format: 'dd/mm/yyyy'}).on('changeDate', function (ev) {
+                                        dp_fechaInicio.hide();
+                                    }).data('datepicker');
+                        </script>
+                        <div ng-show="errores.fecha">{{errores.fecha}}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Fecha Fin Registro</label>
+                        <div class="input-group">
+                            <input id="fechaFin" 
+                                   class="form-control datepicker" 
+                                   type="text" 
+                                   ng-model="datosFormulario.fechaFin"/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                        </div>
+                        <script>
+                                    var dp_fechaFin = $('#fechaFin').datepicker({format: 'dd/mm/yyyy'}).on('changeDate', function (ev) {
+                                        dp_fechaFin.hide();
+                                    }).data('datepicker');
+                        </script>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Estado de la Solicitud</label>
+                        <select class="form-control" ng-model="datosFormulario.estadoPostulacion">
+                            <option value="REGISTRADO">Registrado</option>
+                            <option value="EN_TRAMITE">En Tr&aacute;mite</option>
+                            <option value="APROBADO">Aprobado</option>
+                            <option value="NO_PAGO">No Pagado</option>
+                            <option value="RECHAZADO">Rechazado</option>
+                            <option value="REGISTRO_POLIZA">Registro T&iacute;tulo Valor</option>
+                            <option value="POLIZA_APROBADA">T&iacute;tulo valor aprobado</option>
+                            <option value="UTILIZADO">Utilizado</option>
+                            <option value="AUTORIZADO">Autorizado</option>
+                            <option value="PAGO_APROBADO">Pago Aprobado</option>
+                            <option value="SOLICITUD_SINIESTRO">Solicitud Siniestro</option>
+                            <option value="SOLICITUD_CANCELACION">Solicitud Cancelaci&oacute;n</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Titulo Valor</label>
+                        <select class="form-control" ng-model="datosFormulario.tituloValor">
+                            <option value="POLIZA_CAUCION">P&oacute;liza Cauci&oacute;n</option>
+                            <option value="GARANTIA_BANCARIA">Garant&iacute;a Bancaria</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="btn-group pull-right">
+                        <button class="btn btn-primary" ng-click="listar()">Consultar</button>
+                        <button class="btn btn-default" ng-click="cancelar()">Limpiar</button>
+                        <button class="btn btn-default" ng-click="descargarExcel()">Descargar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Solicitud
+                </th>		
+                <th>
+                    Fecha
+                </th>		
+                <th>
+                    Solicitante
+                </th>	
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Fecha Asignaci&oacute;n
+                </th>
+                <th>
+                    CCM Solicitados
+                </th>
+                <th>
+                    VIN
+                </th>
+                <th><input ng-model="q" class="form-control" placeholder="Buscar"/></th>
+            </tr> 
+            <tr dir-paginate="row in lista|filter: q|itemsPerPage:10">
+                <td class="row">{{row.solicitud}}</td>
+                <td class="row">{{row.fecha| date: 'dd/MM/yyyy'}}</td>
+                <td class="row">{{row.persona.tipoDocumento.abreviatura}} - {{row.persona.numeroDocumento}}<br/>{{row.nombreSolicitante}}</td>
+                <td class="row">{{row.estado}}</td>
+                <td class="row">{{row.asignacionCCM.fecha}}</td> 
+                <td class="row">{{row.numeroCCM}}</td>              
+                <td class="row">{{row.vin}}</td>              
+                <td>
+                    <button class="btn btn-primary" ng-click="detalle(row)">Ver Detalle</button>
+                </td>
+            </tr>
+        </table>
+        <div dir-pagination-controls></div>
+        <br/>
+    </div>
+</div>
+
+
+<div id="detalleModal" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalle de la solicitud</h4>
+            </div>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse1">Informaci&oacute;n de la Solicitud</a>
+                        </h4>
+                    </div>
+                    <div id="collapse1" class="panel-collapse in">
+                        <div class="panel-body">
+                            <div class="form-group col-xs-12">
+                                <label>Tipo Proceso:</label>
+                                <span>Runistac - CCM</span>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>N&uacute;mero de la Solicitud:</label>
+                                <span>{{postulacion.solicitud}}</span>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>Estado del Tr&aacute;mite:</label>
+                                <span>{{postulacion.estado}}</span>
+                            </div>
+                            <div class="form-group col-xs-12">
+                                <label>Solicitante:</label>
+                                <span>{{postulacion.nombreSolicitante}}</span>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>Tipo Documento Solicitante:</label>
+                                <span>{{postulacion.persona.tipoDocumento.abreviatura}}</span>
+                            </div>
+                            <div class="form-group col-xs-6">
+                                <label>N&uacute;mero Documento Solicitante:</label>
+                                <span>{{postulacion.persona.numeroDocumento}}</span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Es Leasing:</label>
+                                <span ng-show="postulacion.leasing">Si</span>
+                                <span ng-hide="postulacion.leasing">No</span>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Locatarios:</label>
+                                <table class="resultados table table-striped">
+                                    <tr>
+                                        <th>Documento</th>
+                                        <th>Nombre</th>
+                                    </tr>
+                                    <tr ng-repeat="row in postulacion.locatarios">
+                                        <td class="row">{{row.tipodocumento.abreviatura}} {{row.numeroDocumento}}</td>
+                                        <td class="row">{{row.nombre}}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                            <div class="form-group col-xs-12">
+                                <label>Observaciones:</label>
+                                <span>{{postulacion.observacionesRechazo}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse2">Informaci&oacute;n del veh&iacute;culo a matricular</a>
+                        </h4>
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="col-lg-12">
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>VIN:</label>
+                                    <span>{{consultaVehiculo.vehiculo.vin}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Motor:</label>
+                                    <span>{{consultaVehiculo.vehiculo.motor}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Serie:</label>
+                                    <span>{{consultaVehiculo.vehiculo.serie}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Chasis:</label>
+                                    <span>{{consultaVehiculo.vehiculo.chasis}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>FTH Chasis:</label>
+                                    <span>{{consultaVehiculo.vehiculo.fthChasis}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>FTH Carrocer&iacute;a:</label>
+                                    <span>{{consultaVehiculo.vehiculo.fthCarroceria}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Marca:</label>
+                                    <span>{{consultaVehiculo.vehiculo.marca}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Linea:</label>
+                                    <span>{{consultaVehiculo.vehiculo.linea}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Clase:</label>
+                                    <span>{{consultaVehiculo.vehiculo.clase}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Peso Bruto Veh&iacute;cular:</label>
+                                    <span>{{consultaVehiculo.vehiculo.pesoBrutoVehicular}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Carroceria:</label>
+                                    <span>{{consultaVehiculo.vehiculo.carroceria}}</span> 
+                                </div>               
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Ejes:</label>
+                                    <span>{{consultaVehiculo.vehiculo.numeroEjes}}</span> 
+                                </div>
+                                <div class="form-group col-sm-6 col-md-6 col-xs-6">
+                                    <label>Configuraci&oacute;n:</label>
+                                    <span>{{consultaVehiculo.vehiculo.configuracion}}</span> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse3">Informaci&oacute;n del T&iacute;tulo Valor</a>
+                        </h4>
+                    </div>
+                    <div id="collapse3" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>T&iacute;tulo valor:</label>
+                                    <span>{{poliza.tipo}}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Tomador:</label>
+                                    <span>{{poliza.tomador}}</span>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Asegurado o Beneficiario: </label>
+                                    <span>{{poliza.asegurado|uppercase}}</span>
+                                </div>
+                                <div class="form-group col-md-12" ng-show="poliza.tipoGarantia">
+                                    <label>Garantia Bancar&iacute;a:</label>
+                                    <span>{{poliza.tipoGarantia.nombre}}</span>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                                    <label>N&uacute;mero del T&iacute;tulo Valor:</label>
+                                    <span>{{poliza.numero}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                                    <label>N&uacute;mero de factura del Veh&iacute;culo:</label>
+                                    <span>{{poliza.numeroFactura}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.fechaExpedicion ? 'error' : ''">
+                                    <label>Fecha de Expedici&oacute;n</label>
+                                    <span>{{poliza.fechaExpedicion}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.fechaInicioVigencia ? 'error' : ''">
+                                    <label>Fecha de Inicio de la Vigencia:</label>
+                                    <span>{{poliza.fechaInicioVigencia}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.fechaFinVigencia ? 'error' : ''">
+                                    <label>Fecha Fin de la Vigencia</label>
+                                    <span>{{poliza.fechaFinVigencia}}</span>
+                                </div>
+                            </div>	
+                            <div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.valorAsegurado ? 'error' : ''">
+                                    <label>Valor Asegurado</label>
+                                    <span>{{poliza.valorAsegurado}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.idAseg ? 'error' : ''">
+                                    <label>Entidad Financiera:</label>
+                                    <span>{{poliza.entidadFinanciera.nombre}}</span>
+                                </div>
+                                <div class="form-group col-md-6" ng-class="errores.idAseg ? 'error' : ''">
+                                    <label>Correo Entidad Financiera:</label>
+                                    <span>{{poliza.entidadFinanciera.correo}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse4">CCM Asignados</a>
+                        </h4>
+                    </div>
+                    <div id="collapse4" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="resultados table table-striped">
+                                <tr>
+                                    <th>No. CCM</th>
+                                    <th>Solicitud Cancelaci&oacute;n</th>
+                                    <th>Certificado Cancelaci&oacute;n</th>
+                                    <th>Acto Administrativo</th>
+                                    <th>Fecha</th>		
+                                    <th>Motivo</th>				
+                                    <th>Placa</th>
+                                    <th>Estado</th>
+                                </tr>
+                                <tr ng-repeat="row in listaCCM">
+                                    <td class="row">{{row.numeroCertificado}}</td>
+                                    <td class="row">{{row.id}}</td>
+                                    <td class="row">1{{row.id}}</td>
+                                    <td class="row">2{{row.id}}</td>
+                                    <td class="row">{{row.fecha}}</td>
+                                    <td class="row">{{row.motivo}}</td>
+                                    <td class="row">{{row.automotor.placa}}</td>
+                                    <td class="row">{{row.estado}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse5">Documentos</a>
+                        </h4>
+                    </div>
+                    <div id="collapse5" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-striped">
+                                        <tr>
+                                            <th>Tipo Documento</th>
+                                            <th>Descargar</th>
+                                        </tr>
+                                        <tr ng-repeat="row in postulacion.anexo">
+                                            <td><span title="{{row.tipoAnexo.descripcion}}">{{row.tipoAnexo.nombre}}</span></td>
+                                            <td>
+                                                <button type="button" class="btn btn-default" ng-click="descargar(row.id)">
+                                                    Descargar
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-target="#collapse6">Estados</a>
+                        </h4>
+                    </div>
+                    <div id="collapse6" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <table class="resultados table table-striped">
+                                <tr>
+                                    <th>Estado</th>
+                                    <th>Fecha</th>		
+                                </tr>
+                                <tr ng-repeat="row in listaEstados">
+                                    <td class="row">{{row.estado}}</td>
+                                    <td class="row">{{row.fecha}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

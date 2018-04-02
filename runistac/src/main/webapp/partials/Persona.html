@@ -1,0 +1,83 @@
+<div class="btn-group">
+	<button type="button" class="btn btn-default" ng-click="nuevo()">Nuevo Persona</button>
+	<button type="button" class="btn btn-default" ng-click="cancelar()">Listar Persona</button>
+</div>
+				
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Persona</div>
+    <div class="panel-body">
+        <table class="resultados table table-striped">
+            <tr>
+                				<th>
+                                    numeroDocumento
+                                </th>
+								<th>
+				                    postulacion
+				                </th>				<th>
+				                    tipoDocumento
+				                </th>
+				<th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                		<td class="row">{{row.numeroDocumento}}</td>
+                
+					<td class="row">{{row.tipoDocumento.nombre}}</td>              	<td class="row">{{row.postulacion.nombre}}</td>              
+				<td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+					<button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de Persona</div>
+    <div class="panel-body">
+        <form role="form" id="formularioEditar">
+            				<div class="row">
+                                <div class="form-group col-md-6" ng-class="errores.numeroDocumento?'error':''">
+                                    <label for="numeroDocumento">numeroDocumento</label>
+                                    <input id="numeroDocumento" 
+                                           class="form-control" 
+            							   type="text"
+                                           ng-model="datosFormulario.numeroDocumento"
+            							   placeholder="numeroDocumento"/>
+                                    <div ng-show="errores.numeroDocumento">{{errores.numeroDocumento}}</div>
+                                </div>
+                            </div> 
+							<div class="row">
+			                    <div class="form-group col-md-6" ng-class="errores.idAseg?'error':''">
+			                        <label>tipoDocumento</label>
+									<select id="tipoDocumento" class="form-control" 
+			                            ng-model="datosFormulario.tipoDocumento"
+			                            ng-options="option.nombre for option in listaTipoDocumento track by option.id">
+			                    	</select>
+			                        <div ng-show="errores.tipoDocumento">{{errores.tipoDocumento}}</div>
+			                    </div>
+			                </div>				<div class="row">
+			                    <div class="form-group col-md-6" ng-class="errores.idAseg?'error':''">
+			                        <label>postulacion</label>
+									<select id="postulacion" class="form-control" 
+			                            ng-model="datosFormulario.postulacion"
+			                            ng-options="option.nombre for option in listaPostulacion track by option.id">
+			                    	</select>
+			                        <div ng-show="errores.postulacion">{{errores.postulacion}}</div>
+			                    </div>
+			                </div>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default" ng-click="guardar()" ng-show="nuevoRegistro">Guardar</button>
+                <button type="button" class="btn btn-default" ng-click="guardar()" ng-show="!nuevoRegistro">Aceptar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

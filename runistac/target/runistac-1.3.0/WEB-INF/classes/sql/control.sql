@@ -1,0 +1,3 @@
+alter table CSWPROC.RU_BANCO add BANCO_SOLICITUDCCM number(1);
+alter table CSWPROC.RU_BANCO add BANCO_GARANTIABANCARIA number(1);
+alter table CSWPROC.RU_BANCO add BANCO_CORREO varchar2(255);

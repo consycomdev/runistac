@@ -1,0 +1,88 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de TipoAnexo</div>
+    <div class="panel-body">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" ng-click="nuevo()">Nuevo TipoAnexo</button>
+            <button type="button" class="btn btn-default" ng-click="cancelar()">Listar TipoAnexo</button>
+        </div>
+        <table class="resultados table table-striped">
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Descripcion
+                </th>
+                <th>
+                    Tipo Proceso
+                </th>
+                <th>
+                    &nbsp;
+                </th>
+            </tr>
+            <tr ng-repeat="row in lista">
+                <td class="row">{{row.nombre}}</td>
+                <td class="row">{{row.descripcion}}</td>
+                <td class="row">{{row.tipoProceso}}</td>
+
+                <td class="row">
+                    <button type="button" class="btn btn-default" ng-click="editar(row)">
+                        <span class="glyphicon glyphicon-pencil"></span>Editar
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="eliminar(row)">
+                        <span class="glyphicon glyphicon-remove"></span>Eliminar
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <br/>
+    </div>
+</div>
+
+<div class="panel panel-primary" ng-show="panelEditar">
+    <div class="panel-heading">Parametrizaci&oacute;n de TipoAnexo</div>
+    <div class="panel-body">
+        <form role="form" id="formularioEditar">
+            <div class="row">
+                <div class="form-group col-md-6" ng-class="errores.nombre ? 'error' : ''">
+                    <label for="nombre">nombre</label>
+                    <input id="nombre" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.nombre"
+                           placeholder="nombre"/>
+                    <div ng-show="errores.nombre">{{errores.nombre}}</div>
+                </div>
+            </div>			
+            <div class="row">
+                <div class="form-group col-md-6" ng-class="errores.descripcion ? 'error' : ''">
+                    <label for="descripcion">descripcion</label>
+                    <input id="descripcion" 
+                           class="form-control" 
+                           type="text"
+                           ng-model="datosFormulario.descripcion"
+                           placeholder="descripcion"/>
+                    <div ng-show="errores.descripcion">{{errores.descripcion}}</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="form-group col-md-6" ng-class="errores.descripcion ? 'error' : ''">
+                    <label for="descripcion">Tipo Proceso</label>
+                    <select ng-model="datosFormulario.tipoProceso" class="form-control">
+                        <option selected value="SOLICITUD">SOLICITUD</option>
+                        <option value="REGISTRO_POLIZA">REGISTRO POLIZA</option>
+                        <option value="SINIESTRO_POLIZA">SINIESTRO POLIZA</option>
+                    </select>
+                    <div ng-show="errores.descripcion">{{errores.descripcion}}</div>
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-default" ng-click="guardar()">Guardar</button>
+                <button type="button" class="btn btn-default" ng-click="cancelar()">Cancelar</button>
+            </div>
+        </form>
+    </div>
+</div>
+

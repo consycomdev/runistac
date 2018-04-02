@@ -1,0 +1,112 @@
+<div class="panel panel-primary" ng-hide="panelEditar">
+    <div class="panel-heading">Consulta de Certificados de Cancelaci&oacute;n Matricula</div>
+    <div class="panel-body">
+        <div class="panel panel-primary">
+            <div class="panel-heading"></div>
+            <div class="panel-body">
+                <div class="form-group col-md-6 col-sm-6 col-xs-6" ng-class="errores.placa ? 'error' : ''">
+                    <label for="fechaInicio">Placa: </label>
+                    <input type="text" id="placa" class="form-control" ng-model="consulta.placa"/>
+                    <div ng-show="errores.placa">{{errores.placa}}</div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-6" ng-class="errores.numeroCCM ? 'error' : ''">
+                    <label for="numeroCCM">N&uacute;mero de CCM:</label>
+                    <input type="text" id="numeroCCM" class="form-control" ng-model="consulta.numeroCertificado"/>
+                    <div ng-show="errores.numeroCCM">{{errores.numeroCCM}}</div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-6" ng-class="errores.fechaInicio ? 'error' : ''">
+                    <label for="fechaInicio">Fecha Cancelaci&oacute;n Inicio: </label>
+                    <input type="text" id="fechaInicio" class="form-control" ng-model="consulta.fechaInicio"/><script>$("#fechaInicio").datepicker();</script>
+                    <div ng-show="errores.fechaInicio">{{errores.fechaInicio}}</div>
+                </div>
+                <div class="form-group col-md-6 col-sm-6 col-xs-6" ng-class="errores.fechaFin ? 'error' : ''">
+                    <label for="fechaFin">Fecha Cancelaci&oacute;n Fin:</label>
+                    <input type="text" id="fechaFin" class="form-control" ng-model="consulta.fechaFin"/><script>$("#fechaFin").datepicker({dateFormat: 'dd/mm/yy'});</script>
+                    <div ng-show="errores.fechaFin">{{errores.fechaFin}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.motivo ? 'error' : ''">
+                    <label for="motivo">Motivo</label>
+                    <select ng-model="consulta.motivo" class="form-control">
+                        <option value="DESINTEGRACION_FISICA_TOTAL_RECONOCI_ECONO">Desintegración f&iacute;sica total con fines de reconocimiento econ&oacute;mico</option>
+                        <!-- option value="DESINTEGRACION_FISICA_TOTAL_REPOSI_RECONOCI_ECONO">Desintegraci&oacute;n f&iacute;sica total con fines de reposici&oacute;n y reconocimiento econ&oacute;mico</option>
+                        <option value="DESINTEGRACION_FISICA_TOTAL_REPOSICION" selected>Desintegración física total con fines de reposición</option -->
+                    </select>
+                    <div ng-show="errores.motivo">{{errores.motivo}}</div>
+                </div>
+                <div class="form-group col-md-6" ng-class="errores.estado ? 'error' : ''">
+                    <label for="estado">Estado</label>
+                    <select ng-model="consulta.estado" class="form-control">
+                        <option value="NUEVO">Nuevo</option>
+                        <option value="RESERVADO">Reservado</option>
+                        <option value="ASIGNADO">Asignado</option>
+                        <option value="UTILIZADO">Utilizado</option>
+                        <option value="ANULADO">Anulado</option>
+                    </select>
+                    <div ng-show="errores.motivo">{{errores.motivo}}</div>
+                </div>
+                <div class="btn-group pull-right">
+                    <button class="btn btn-primary" ng-click="listar()">Consultar</button>
+                    <button class="btn btn-primary" ng-click="limpiar()">Limpiar</button>
+                </div>
+            </div>
+        </div>
+
+
+        <table class="resultados table table-striped">
+            <tr>
+                <th>N&uacute;mero del CCM</th>
+                <th>Fecha</th>		
+                <th>Motivo</th>				
+                <th>Placa</th>
+                <th>Estado</th>
+                <th>&nbsp;</th>
+            </tr>
+            <tr dir-paginate="row in lista|itemsPerPage:20">
+                <td class="row">{{row.numeroCertificado}}</td>
+                <td class="row">{{row.fecha}}</td>
+                <td class="row">{{row.motivo}}</td>
+                <td class="row">{{row.automotor.placa}}</td>
+                <td class="row">{{row.estado}}</td>
+                <td class="row"><button class="btn btn-primary" ng-click="detalle(row)" ng-hide="row.estado == 'NUEVO'">Ver Detalle</button></td>
+            </tr>
+        </table>
+        <div dir-pagination-controls></div>
+        <br/>
+    </div>
+</div>
+
+<div id="detalleModal" class="modal fade modal-lg" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Detalle del CCM</h4>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Solicitud:</label>
+                <span class="form-control">{{detallePostulacion.solicitud}}</span>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Fecha de asignaci&oacute;n:</label>
+                <span class="form-control">{{detallePostulacion.fecha}}</span>
+            </div>
+            <div class="form-group col-md-12">
+                <label>Documento Solicitante: </label>
+                <span class="form-control">{{detallePostulacion.documento}}</span>
+            </div>
+            <div class="form-group col-md-12">
+                <label>Nombre Solicitante: </label>
+                <span class="form-control">{{detallePostulacion.nombreSolicitante}}</span>
+            </div>
+
+            <div class="modal-footer">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

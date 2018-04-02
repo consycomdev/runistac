@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=11" />
+        <title>Graficas</title>
+
+        <link rel="stylesheet" href="./css/graficos.css">
+        <link rel="stylesheet" href="./css/bootstrap.min.css">
+        <link rel="stylesheet" href="../css/main.css">
+
+        <script src="./js/lib/jquery-3.2.1.min.js"></script>
+        <script src="./js/lib/popper.min.js"></script>
+        <script src="./js/lib/bootstrap.min.js"></script>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="./css/bootstrap-select.min.css">
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="./js/lib/bootstrap-select.min.js"></script>
+
+        <!-- (Optional) Latest compiled and minified JavaScript translation files -->
+        <script src="./js/i18n/defaults-es_ES.min.js"></script>
+
+
+        <link rel="stylesheet" href="./css/font-awesome.css">
+
+
+        <script src="./js/d3.v4.min.js"></script>
+
+        <script src="./js/barras.js"></script>
+        <script src="./js/lineas.js"></script>
+        <script src="./js/pie.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+
+    </head>
+    <body>
+        <div class="content">
+            <div class="content-header">
+
+                <img class="pull-left" src="../img/pd_rz_06.jpg" alt="encabezado"/>
+                <br/>
+                <a class="btn btn-primary pull-right" href="/runt/bienvenida.jsf">Volver a la P&aacute;gina Principal</a>
+            </div>
+            <div class="content-body col-lg-12">
+                <div class="card col-lg-12">
+                    <h4 class="card-header">Estadisticas Certificados de Cancelaci&oacute;n de Matricula</h4> 
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="card col-xl-4 col-lg-4 col-md-6" >
+                                <h4 class="card-header">Estado de los CCM</h4>
+                                <div class="card-body ">
+                                    <div class="row" id="selectCCM_ESTADO"></div>
+                                    <div id="CCM_ESTADO"></div>
+                                </div>
+                            </div>
+                            <div class="card col-xl-4 col-lg-4 col-md-6" >
+                                <h4 class="card-header">A&ntilde;o de cancelaci&oacute;n</h4>
+                                <div class="card-body ">
+                                    <div class="row" id="selectAAAA"></div>
+                                    <div id="AAAA"></div>
+                                </div>
+                            </div>
+                            <div class="card col-xl-4 col-lg-4 col-md-6" >
+                                <h4 class="card-header">Mes de Cancelaci&oacute;n</h4>
+                                <div class="card-body ">
+                                    <div class="row" id="selectMM"></div>
+                                    <div id="MM"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="content-footer">
+
+            </div>
+
+        </div>
+        <script src="./js/graficos.js"></script>
+        <script src="./js/controlador.js"></script>
+    </body>
+</html>
